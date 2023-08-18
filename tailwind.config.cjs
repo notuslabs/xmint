@@ -18,6 +18,7 @@ const config = {
 				'mint-darker': 'var(--mint-darker)',
 				snow: 'var(--snow)',
 				'snow-dark': 'var(--snow-dark)',
+				'snow-darker': 'var(--snow-darker)',
 				'dark-gray': 'var(--dark-gray)',
 				'dark-gray-400': 'var(--dark-gray-400)',
 				'dark-gray-500': 'var(--dark-gray-500)',

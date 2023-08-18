@@ -1,10 +1,10 @@
 import { createTabs } from '@melt-ui/svelte';
 import { getContext, setContext } from 'svelte';
 
-export function initTabsStore(defaultValue: 'mint' | 'redeem') {
-	const tabsStore = createTabs({
-		defaultValue
-	});
+type InitTabProps = Parameters<typeof createTabs>[0];
+
+export function initTabsStore(props: InitTabProps) {
+	const tabsStore = createTabs(props);
 
 	setContext('tabs', tabsStore);
 }
