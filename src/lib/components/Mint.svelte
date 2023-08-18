@@ -2,7 +2,6 @@
 	import { getTabsStore } from '$lib/stores/tabsStore';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
 	import ChevronDown from './icons/ChevronDown.svelte';
-	import { fly } from 'svelte/transition';
 	import ArrowCircleDown from './icons/ArrowCircleDown.svelte';
 	import type { SvelteComponent } from 'svelte';
 	import { result } from '$lib/stores/resultStore';
@@ -85,7 +84,6 @@
 					<button
 						use:melt={$firstMenuTrigger}
 						class="w-max flex justify-center items-center gap-2 bg-dark-gray-900 rounded-lg border border-border-gray-darker px-2 py-1.5 text-sm"
-						transition:fly={{ duration: 150 }}
 					>
 						<svelte:component this={selectedBaseMint.icon} class="rounded-full" />
 						{selectedBaseMint.label}
@@ -143,7 +141,6 @@
 					<button
 						use:melt={$secondMenuTrigger}
 						class="w-max flex justify-center items-center gap-2 bg-dark-gray-900 rounded-lg border border-border-gray-darker px-2 py-1.5 text-sm"
-						transition:fly={{ duration: 150 }}
 					>
 						<svelte:component this={selectedResultMint.icon} class="rounded-full" />
 						{selectedResultMint.label}

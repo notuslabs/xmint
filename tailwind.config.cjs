@@ -34,6 +34,9 @@ const config = {
 			height: {
 				navbar: 'var(--navbar-height)',
 				content: 'var(--content-height)'
+			},
+			transitionTimingFunction: {
+				'in-out-back': 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
 			}
 		}
 	},

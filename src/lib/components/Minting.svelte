@@ -79,8 +79,6 @@
 	let hovering: null | 'mint' | 'redeem' = null;
 
 	$: calculated = $currentTab === 'mint' ? $result.mint !== null : $result.redeem !== null;
-
-	$: console.log({ hovering, currentTab: $currentTab });
 </script>
 
 <div
@@ -93,7 +91,7 @@
 	>
 		<div
 			class={cn(
-				'absolute w-1/2 rounded-lg border border-mint bg-mint-transparent top-0 h-full transition ease-out',
+				'absolute w-1/2 rounded-lg border border-mint bg-mint-transparent top-0 h-full transition ease-in-out-quart duration-300',
 				$currentTab === 'redeem' && 'translate-x-full',
 				$currentTab === 'mint' && 'translate-x-0',
 				hovering === 'mint' && 'translate-x-0',
