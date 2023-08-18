@@ -29,7 +29,11 @@
 		background-color: #2a2a2a;
 		color: var(--snow);
 		font-family: var(--font-sans);
-		height: 100%;
+		overflow-x: hidden;
+
+		@media screen('lg') {
+			overflow-y: hidden;
+		}
 	}
 
 	*[hidden='true'] {

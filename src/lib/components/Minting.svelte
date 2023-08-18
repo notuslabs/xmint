@@ -15,6 +15,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import { result } from '$lib/stores/resultStore';
 	import { slide } from 'svelte/transition';
+	import Light1 from './icons/Light1.svelte';
 
 	initTabsStore({
 		defaultValue: 'mint'
@@ -136,9 +137,9 @@
 				transition:slide
 			>
 				{#if $currentTab === 'mint'}
-					1 USDT = 0.012 xOIL ($83.85)
+					1 USDT = 0.012 xOIL ($83.33)
 				{:else}
-					0.012 xOIL ($83.85) = 1 USDT
+					0.012 xOIL ($83.33) = 1 USDT
 				{/if}
 			</p>
 

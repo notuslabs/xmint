@@ -121,7 +121,7 @@
 						type="number"
 						name="collateral"
 						id="collateral"
-						class="text-2xl bg-transparent text-right w-full inline-block break-all max-w-full"
+						class="text-2xl bg-transparent text-right w-full inline-block break-all max-w-full focus:outline-none"
 						placeholder="0"
 						bind:value={collateralValue}
 						on:input={() => onCollateralValueChange(collateralValue)}
@@ -179,7 +179,7 @@
 						type="number"
 						name="minted"
 						id="minted"
-						class="text-2xl bg-transparent text-right w-full inline-block break-all max-w-full"
+						class="text-2xl bg-transparent text-right w-full inline-block break-all max-w-full focus:outline-none"
 						placeholder="0"
 						bind:value={mintedValue}
 						on:input={() => onMintedValueChange(mintedValue)}
