@@ -76,8 +76,11 @@
 
 	let selectedBaseMint = mintingBaseOptions[0];
 	let selectedResultMint = mintingResultOptions[0];
+	let hovering: null | 'mint' | 'redeem' = null;
 
 	$: calculated = $currentTab === 'mint' ? $result.mint !== null : $result.redeem !== null;
+
+	$: console.log({ hovering, currentTab: $currentTab });
 </script>
 
 <div
@@ -85,21 +88,38 @@
 	use:melt={$tabRoot}
 >
 	<div
-		class="w-full flex bg-dark-gray-700 rounded-lg border border-dark-gray-400 h-10"
+		class="relative w-full flex bg-dark-gray-700 rounded-lg border border-dark-gray-400 h-10"
 		use:melt={$tabList}
 	>
+		<div
+			class={cn(
+				'absolute w-1/2 rounded-lg border border-mint bg-mint-transparent top-0 h-full transition ease-out',
+				$currentTab === 'redeem' && 'translate-x-full',
+				$currentTab === 'mint' && 'translate-x-0',
+				hovering === 'mint' && 'translate-x-0',
+				hovering === 'redeem' && 'translate-x-full'
+			)}
+		/>
 		<button
 			class={cn(
-				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center data-[state="active"]:bg-mint-transparent rounded-lg data-[state="active"]:border-mint border'
+				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center rounded-lg border z-[2]'
 			)}
+			on:mouseover={() => (hovering = 'mint')}
+			on:focus={() => (hovering = 'mint')}
+			on:blur={() => (hovering = null)}
+			on:mouseleave={() => (hovering = null)}
 			use:melt={$tabTrigger('mint')}
 		>
 			Mint
 		</button>
 		<button
 			class={cn(
-				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center data-[state="active"]:bg-mint-transparent rounded-lg data-[state="active"]:border-mint border'
+				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center rounded-lg border z-[2]'
 			)}
+			on:mouseover={() => (hovering = 'redeem')}
+			on:focus={() => (hovering = 'redeem')}
+			on:blur={() => (hovering = null)}
+			on:mouseleave={() => (hovering = null)}
 			use:melt={$tabTrigger('redeem')}
 		>
 			Redeem
