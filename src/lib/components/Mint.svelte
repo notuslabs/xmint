@@ -55,7 +55,7 @@
 			mintedValue = 0;
 			return;
 		}
-		mintedValue = amount * 0.012;
+		mintedValue = (amount * 0.0125) / 2;
 	}
 
 	function onMintedValueChange(amount: number | null) {
@@ -67,7 +67,7 @@
 			collateralValue = 0;
 			return;
 		}
-		collateralValue = Number((amount / 0.012).toPrecision(21));
+		collateralValue = Number((amount / 0.0125 / 2).toPrecision(21));
 	}
 
 	$: $result.mint = collateralValue === 0 ? null : mintedValue;

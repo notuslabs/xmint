@@ -12,10 +12,9 @@
 	import Mint from './Mint.svelte';
 	import Redeem from './Redeem.svelte';
 	import type { DropdownItem } from '$lib/types';
-	import type { SvelteComponent } from 'svelte';
+	import { onMount, type SvelteComponent } from 'svelte';
 	import { result } from '$lib/stores/resultStore';
 	import { slide } from 'svelte/transition';
-	import Light1 from './icons/Light1.svelte';
 
 	initTabsStore({
 		defaultValue: 'mint'
@@ -79,9 +78,21 @@
 	let hovering: null | 'mint' | 'redeem' = null;
 
 	$: calculated = $currentTab === 'mint' ? $result.mint !== null : $result.redeem !== null;
+
+	onMount(() => {
+		const mintingElement = document.getElementById('minting');
+		const minting = mintingElement?.getBoundingClientRect().right;
+
+		const root = document.documentElement;
+		root.style.setProperty(
+			'--account-center-position-right',
+			window.screen.width - (minting ?? 0) - 16 + 'px'
+		);
+	});
 </script>
 
 <div
+	id="minting"
 	class="rounded-lg w-full max-w-[386px] px-5 py-8 border border-border-gray flex flex-col gap-[34px] bg-dark-gray"
 	use:melt={$tabRoot}
 >
@@ -100,7 +111,7 @@
 		/>
 		<button
 			class={cn(
-				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center rounded-lg border z-[2]'
+				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center rounded-lg border z-[0]'
 			)}
 			on:mouseover={() => (hovering = 'mint')}
 			on:focus={() => (hovering = 'mint')}
@@ -112,7 +123,7 @@
 		</button>
 		<button
 			class={cn(
-				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center rounded-lg border z-[2]'
+				'flex-1 border-transparent font-bold py-[11.5px] px-6 flex justify-center items-center rounded-lg border z-[0]'
 			)}
 			on:mouseover={() => (hovering = 'redeem')}
 			on:focus={() => (hovering = 'redeem')}
@@ -155,20 +166,20 @@
 				transition:slide
 			>
 				{#if $currentTab === 'mint'}
-					1 USDT = 0.012 xOIL ($83.33)
+					1 USDT = 0.0125 xOIL - Oracle Price ($80.00)
 				{:else}
-					0.012 xOIL ($83.33) = 1 USDT
+					1 xOIL = 80.00 USDT - Oracle Price ($80.00)
 				{/if}
 			</p>
 
 			<div class="flex flex-col" transition:slide>
 				<div class="flex justify-between items-start">
 					<p class="text-snow-darker">Collateral Ratio</p>
-					<p class="text-snow-darker">300%</p>
+					<p class="text-snow-darker">200%</p>
 				</div>
 				<div class="flex justify-between items-start">
 					<p class="text-snow-darker">Spread Fee</p>
-					<p class="text-snow-darker">0.2%</p>
+					<p class="text-snow-darker">0%</p>
 				</div>
 				<div class="flex justify-between items-start">
 					<p class="text-snow-darker">Output</p>
