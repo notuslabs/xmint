@@ -5,6 +5,7 @@
 	import { createTooltip, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 	import ComingSoonLink from '$lib/components/ComingSoonLink.svelte';
+	import ConnectWallet from '$lib/components/ConnectWallet.svelte';
 
 	const {
 		elements: { trigger, content, arrow },
@@ -41,12 +42,7 @@
 	</div>
 
 	<div>
-		<button
-			class="group flex gap-2 items-center justify-center h-10 px-4 py-2 rounded-lg border border-mint bg-transparent text-snow hover:bg-mint-transparent active:bg-mint transition-colors whitespace-nowrap"
-		>
-			<WalletIcon width={24} height={24} class="group-active:fill-snow transition-colors" />
-			Connect Wallet
-		</button>
+		<ConnectWallet />
 	</div>
 </nav>
 <slot />
