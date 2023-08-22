@@ -2,7 +2,7 @@ import Onboard from '@web3-onboard/core';
 import type { OnboardAPI } from '@web3-onboard/core';
 
 import injectedWalletsModule from '@web3-onboard/injected-wallets';
-import walletConnectModule from '@web3-onboard/walletconnect';
+// import walletConnectModule from '@web3-onboard/walletconnect';
 
 // const wcV2InitOptions = {
 // 	projectId: process.env.NEXT_PUBLIC_WALLETCONNECT ?? '',
