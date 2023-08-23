@@ -1,6 +1,6 @@
 # xmint
 
-xMint is a dapp where you can trade stocks, commodities and ETFs on the XinFin network.
+xMint is a DApp that allows you to trade stocks, commodities, and ETFs on the XinFin network.
 
 ![xmint-1](https://github.com/notuslabs/xmint/assets/35041924/df3f365e-2be4-4c7a-b294-cfe9e3a74f89)
 ***xMint Homepage***
@@ -23,7 +23,10 @@ xMint is a dapp where you can trade stocks, commodities and ETFs on the XinFin n
 ### Technologies used
 - SvelteKit.js;
 - TypeScript;
-- 
+- Tailwind;
+- melt-ui;
+- web3-onboard.js;
+- ethers.js
 
 
 ## 📜 License
