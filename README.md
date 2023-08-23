@@ -32,5 +32,5 @@ xMint is a dapp where you can trade stocks, commodities and ETFs on the XinFin n
 
 ---
 
-##### <p align="center"> <strong> < desenvolvido por <a href="https://www.notuslabs.xyz/"Notus Labs/a> /> </strong> 👋
+##### <p align="center"> <strong> < desenvolvido por <a href="https://notuslabs.xyz/">Notus Labs</a> /> </strong> 👋
 
