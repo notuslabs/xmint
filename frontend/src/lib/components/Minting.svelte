@@ -16,6 +16,21 @@
 	import { result } from '$lib/stores/resultStore';
 	import { slide } from 'svelte/transition';
 
+	import {
+		BrowserProvider,
+		JsonRpcProvider,
+		Contract,
+		ZeroAddress,
+		MaxUint256,
+		ethers
+	} from 'ethers';
+	import onboard from '$lib/web3-onboard';
+
+	import OilMintABI from '$lib/OilMint.json';
+	import XusdtABI from '$lib/XUSDT.json';
+
+	import { OilMintContract, XUSDTContract, rpcURL } from '$lib/constants';
+
 	initTabsStore({
 		defaultValue: 'mint'
 	});
@@ -34,7 +49,7 @@
 
 	const mintingBaseOptions: DropdownItem[] = [
 		{
-			label: 'USDT',
+			label: 'xUSDT',
 			icon: Usdt as unknown as typeof SvelteComponent,
 			comingSoon: false
 		},
@@ -80,15 +95,97 @@
 	$: calculated = $currentTab === 'mint' ? $result.mint !== null : $result.redeem !== null;
 
 	onMount(() => {
-		const mintingElement = document.getElementById('minting');
-		const minting = mintingElement?.getBoundingClientRect().right;
+		let mintingElement = document.getElementById('minting');
+		let minting = mintingElement?.getBoundingClientRect().right;
 
-		const root = document.documentElement;
+		let root = document.documentElement;
 		root.style.setProperty(
 			'--account-center-position-right',
 			window.screen.width - (minting ?? 0) - 16 + 'px'
 		);
 	});
+
+	const wallets$ = onboard.state.select('wallets');
+	$: connectedAccount = $wallets$?.[0]?.accounts?.[0];
+
+	const approve = async () => {
+		const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
+		const signer = await sendProvider.getSigner();
+		try {
+			const contractSend = new Contract(XUSDTContract, XusdtABI, signer);
+
+			const tx = await contractSend.approve(OilMintContract, MaxUint256);
+			console.log(tx);
+			alert('Approved');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	let balance = 0;
+
+	const balanceOf = async (connectedAccount: any) => {
+		const readProvider = new JsonRpcProvider(rpcURL);
+		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
+
+		try {
+			if (connectedAccount.address) {
+				const tx = await contractRead.balanceOf(connectedAccount.address);
+				balance = Number(tx) / 10 ** 6;
+			}
+			return 0;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	$: balanceOf(connectedAccount);
+
+	let isApproved: boolean;
+
+	const allowance = async (connectedAccount: any, amount: any) => {
+		const readProvider = new JsonRpcProvider(rpcURL);
+		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
+
+		try {
+			const tx = await contractRead.allowance(connectedAccount.address, OilMintContract);
+			isApproved = Number(tx) / 10 ** 6 > ((amount || 0) / 0.0125) * 2;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	$: allowance(connectedAccount, $result.mint);
+
+	$: console.log((($result.mint || 0) / 0.0125) * 2 * 10 ** 6);
+	$: console.log(((($result.redeem || 0) * 0.0125) / 2) * 10 ** 18);
+
+	const deposit = async () => {
+		const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
+		const signer = await sendProvider.getSigner();
+
+		try {
+			const contractSend = new Contract(OilMintContract, OilMintABI, signer);
+			const tx = await contractSend.deposit((($result.mint || 0) / 0.0125) * 2 * 10 ** 6);
+
+			return tx;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const withdraw = async () => {
+		const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
+		const signer = await sendProvider.getSigner();
+
+		try {
+			const contractSend = new Contract(OilMintContract, OilMintABI, signer);
+			const tx = await contractSend.withdraw(((($result.redeem || 0) * 0.0125) / 2) * 10 ** 6);
+
+			return tx;
+		} catch (error) {
+			console.log(error);
+		}
+	};
 </script>
 
 <div
@@ -193,11 +290,29 @@
 				</div>
 			</div>
 		{/if}
-
-		<button
-			class="font-bold bg-mint rounded-lg px-2.5 py-[11.5px] h-10 flex justify-center items-center hover:bg-mint-dark transition-colors active:bg-mint-darker"
-		>
-			Approve
-		</button>
+		{#if $currentTab === 'mint'}
+			{#if isApproved}
+				<button
+					class="font-bold bg-mint rounded-lg px-2.5 py-[11.5px] h-10 flex justify-center items-center hover:bg-mint-dark transition-colors active:bg-mint-darker"
+					on:click={deposit}
+				>
+					Mint
+				</button>
+			{:else}
+				<button
+					class="font-bold bg-mint rounded-lg px-2.5 py-[11.5px] h-10 flex justify-center items-center hover:bg-mint-dark transition-colors active:bg-mint-darker"
+					on:click={approve}
+				>
+					Approve
+				</button>
+			{/if}
+		{:else}
+			<button
+				class="font-bold bg-mint rounded-lg px-2.5 py-[11.5px] h-10 flex justify-center items-center hover:bg-mint-dark transition-colors active:bg-mint-darker"
+				on:click={withdraw}
+			>
+				Redeem
+			</button>
+		{/if}
 	</div>
 </div>
