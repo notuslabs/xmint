@@ -6,7 +6,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import { result } from '$lib/stores/resultStore';
 
-	import { BrowserProvider, JsonRpcProvider, Contract, ZeroAddress } from 'ethers';
+	import { Contract, ethers } from 'ethers';
 	import onboard from '$lib/web3-onboard';
 
 	import XusdtABI from '$lib/XUSDT.json';
@@ -86,7 +86,8 @@
 	let balance = 0;
 
 	const balanceOf = async (connectedAccount: any) => {
-		const readProvider = new JsonRpcProvider(rpcURL);
+		const readProvider = new ethers.providers.JsonRpcProvider(rpcURL);
+		// const readProvider = new JsonRpcProvider(rpcURL);
 		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
 
 		try {

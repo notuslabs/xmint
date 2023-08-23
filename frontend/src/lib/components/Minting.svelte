@@ -16,7 +16,7 @@
 	import { result } from '$lib/stores/resultStore';
 	import { slide } from 'svelte/transition';
 
-	import { BrowserProvider, JsonRpcProvider, Contract, MaxUint256 } from 'ethers';
+	import { ethers, Contract } from 'ethers';
 	import onboard from '$lib/web3-onboard';
 
 	import OilMintABI from '$lib/OilMint.json';
@@ -102,12 +102,13 @@
 	$: connectedAccount = $wallets$?.[0]?.accounts?.[0];
 
 	const approve = async () => {
-		const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
+		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
+		// const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
 		const signer = await sendProvider.getSigner();
 		try {
 			const contractSend = new Contract(XUSDTContract, XusdtABI, signer);
 
-			const tx = await contractSend.approve(OilMintContract, MaxUint256);
+			const tx = await contractSend.approve(OilMintContract, ethers.constants.MaxUint256);
 			console.log(tx);
 			alert('Approved');
 		} catch (error) {
@@ -118,7 +119,8 @@
 	let balance = 0;
 
 	const balanceOf = async (connectedAccount: any) => {
-		const readProvider = new JsonRpcProvider(rpcURL);
+		const readProvider = new ethers.providers.JsonRpcProvider(rpcURL);
+
 		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
 
 		try {
@@ -136,7 +138,8 @@
 	let isApproved: boolean;
 
 	const allowance = async (connectedAccount: any, amount: any) => {
-		const readProvider = new JsonRpcProvider(rpcURL);
+		const readProvider = new ethers.providers.JsonRpcProvider(rpcURL);
+
 		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
 
 		try {
@@ -153,8 +156,9 @@
 	$: console.log(((($result.redeem || 0) * 0.0125) / 2) * 10 ** 18);
 
 	const deposit = async () => {
-		const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
-		const signer = await sendProvider.getSigner();
+		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
+
+		const signer = sendProvider.getSigner();
 
 		try {
 			const contractSend = new Contract(OilMintContract, OilMintABI, signer);
@@ -167,8 +171,9 @@
 	};
 
 	const withdraw = async () => {
-		const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
-		const signer = await sendProvider.getSigner();
+		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
+
+		const signer = sendProvider.getSigner();
 
 		try {
 			const contractSend = new Contract(OilMintContract, OilMintABI, signer);
