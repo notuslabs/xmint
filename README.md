@@ -40,7 +40,9 @@ xMint is a DApp that allows you to trade stocks, commodities, and ETFs on the Xi
 
 https://xdc.blocksscan.io/address/xdc0875275210fbae70d453abecaaf6a95d8f2146b3#readContract
 
-[![Watch the video](https://www.youtube.com/watch?v=h3WLEkcWuAY)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/h3WLEkcWuAY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ## 📜 License
 
