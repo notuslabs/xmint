@@ -5,7 +5,7 @@ async function main() {
   const depositMultiplier = 625; 
   const depositVault = await DepositVault.deploy('0xd4b5f10d61916bd6e0860144a91ac658de8a1437',depositMultiplier);
 
-  console.log("DepositVault deployed to:", await depositVault.address);
+  console.log("DepositVault deployed to:", depositVault.address);
 }
 
 main()
