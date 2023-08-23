@@ -170,7 +170,7 @@ if (!onboard) {
 		accountCenter: {
 			desktop: {
 				enabled: true,
-				position: 'topLeft'
+				position: 'topRight'
 			},
 			mobile: {
 				enabled: true,
