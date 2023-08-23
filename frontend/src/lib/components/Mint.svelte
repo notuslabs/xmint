@@ -9,10 +9,9 @@
 	import { BrowserProvider, JsonRpcProvider, Contract, ZeroAddress } from 'ethers';
 	import onboard from '$lib/web3-onboard';
 
-	import OilMintABI from '$lib/OilMint.json';
 	import XusdtABI from '$lib/XUSDT.json';
 
-	import { OilMintContract, XUSDTContract, rpcURL } from '$lib/constants';
+	import { XUSDTContract, rpcURL } from '$lib/constants';
 
 	export let mintingBaseOptions: {
 		label: string;

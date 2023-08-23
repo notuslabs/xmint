@@ -16,14 +16,7 @@
 	import { result } from '$lib/stores/resultStore';
 	import { slide } from 'svelte/transition';
 
-	import {
-		BrowserProvider,
-		JsonRpcProvider,
-		Contract,
-		ZeroAddress,
-		MaxUint256,
-		ethers
-	} from 'ethers';
+	import { BrowserProvider, JsonRpcProvider, Contract, MaxUint256 } from 'ethers';
 	import onboard from '$lib/web3-onboard';
 
 	import OilMintABI from '$lib/OilMint.json';

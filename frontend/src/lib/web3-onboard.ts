@@ -1,3 +1,6 @@
+// import { Buffer } from 'buffer';
+// globalThis.Buffer = Buffer;
+
 import Onboard from '@web3-onboard/core';
 import type { OnboardAPI } from '@web3-onboard/core';
 
