@@ -5,6 +5,9 @@
 	import NotusLogo from '$lib/components/icons/NotusLogo.svelte';
 </script>
 
+<svelte:head>
+	<title>xMint - Decentralized Synthetic Assets</title>
+</svelte:head>
 <div class="h-content flex flex-col gap-6">
 	<main class="flex items-start justify-center px-6 container mx-auto">
 		<Light1 class="fixed -top-[360px] -z-10 left-[40%]" />

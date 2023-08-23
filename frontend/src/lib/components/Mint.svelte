@@ -6,8 +6,6 @@
 	import type { SvelteComponent } from 'svelte';
 	import { result } from '$lib/stores/resultStore';
 
-	import onboard from '$lib/web3-onboard';
-
 	export let mintingBaseOptions: {
 		label: string;
 		icon: typeof SvelteComponent;
