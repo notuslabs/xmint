@@ -38,6 +38,8 @@
 	export let secondMenuItem: ReturnType<typeof createDropdownMenu>['elements']['item'];
 	export let secondMenuTrigger: ReturnType<typeof createDropdownMenu>['elements']['trigger'];
 
+	export let balance: any;
+
 	const {
 		elements: { content: tabContent },
 		states: { value: currentTab }
@@ -71,6 +73,7 @@
 	}
 
 	$: $result.redeem = mintedValue === 0 ? null : collateralValue;
+	$: $currentTab;
 </script>
 
 <div use:melt={$tabContent('redeem')} class="flex flex-col gap-8 relative">
@@ -112,7 +115,9 @@
 						{/each}
 					</div>
 					<!-- Dropdown Component -->
-					<span class="text-sm text-dark-gray-500 font-bold leading-[normal]">Balance:</span>
+					<span class="text-sm text-dark-gray-500 font-bold leading-[normal]"
+						>Balance: {balance.oilmint}</span
+					>
 				</div>
 				<div class="flex justify-end items-center h-[79.5px]">
 					<input
@@ -169,7 +174,9 @@
 						{/each}
 					</div>
 					<!-- Dropdown Component -->
-					<span class="text-sm text-dark-gray-500 font-bold leading-[normal]">Balance:</span>
+					<span class="text-sm text-dark-gray-500 font-bold leading-[normal]"
+						>Balance: {balance.xusdt}</span
+					>
 				</div>
 				<div class="flex justify-end items-center h-[79.5px]">
 					<input

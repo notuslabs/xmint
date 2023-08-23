@@ -87,53 +87,21 @@
 
 	$: calculated = $currentTab === 'mint' ? $result.mint !== null : $result.redeem !== null;
 
-	onMount(() => {
-		let mintingElement = document.getElementById('minting');
-		let minting = mintingElement?.getBoundingClientRect().right;
-
-		let root = document.documentElement;
-		root.style.setProperty(
-			'--account-center-position-right',
-			window.screen.width - (minting ?? 0) - 16 + 'px'
-		);
-	});
-
 	const wallets$ = onboard.state.select('wallets');
 	$: connectedAccount = $wallets$?.[0]?.accounts?.[0];
 
 	const approve = async () => {
 		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
-		// const sendProvider = new BrowserProvider($wallets$?.[0]?.provider);
 		const signer = await sendProvider.getSigner();
 		try {
 			const contractSend = new Contract(XUSDTContract, XusdtABI, signer);
 
 			const tx = await contractSend.approve(OilMintContract, ethers.constants.MaxUint256);
-			console.log(tx);
 			alert('Approved');
 		} catch (error) {
 			console.log(error);
 		}
 	};
-
-	let balance = 0;
-
-	const balanceOf = async (connectedAccount: any) => {
-		const readProvider = new ethers.providers.JsonRpcProvider(rpcURL);
-
-		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
-
-		try {
-			if (connectedAccount.address) {
-				const tx = await contractRead.balanceOf(connectedAccount.address);
-				balance = Number(tx) / 10 ** 6;
-			}
-			return 0;
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	$: balanceOf(connectedAccount);
 
 	let isApproved: boolean;
 
@@ -151,9 +119,6 @@
 	};
 
 	$: allowance(connectedAccount, $result.mint);
-
-	$: console.log((($result.mint || 0) / 0.0125) * 2 * 10 ** 6);
-	$: console.log(((($result.redeem || 0) * 0.0125) / 2) * 10 ** 18);
 
 	const deposit = async () => {
 		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
@@ -184,6 +149,43 @@
 			console.log(error);
 		}
 	};
+
+	let balance = {
+		xusdt: 0,
+		oilmint: 0
+	};
+
+	const balanceOf = async (connectedAccount: any) => {
+		const readProvider = new ethers.providers.JsonRpcProvider(rpcURL);
+
+		const xUSDT = new Contract(XUSDTContract, XusdtABI, readProvider);
+		const xOil = new Contract(OilMintContract, OilMintABI, readProvider);
+
+		try {
+			if (connectedAccount.address) {
+				const balanceXUSDT = await xUSDT.balanceOf(connectedAccount.address);
+				const balanceOILMINT = await xOil.balanceOf(connectedAccount.address);
+
+				balance.xusdt = Number(balanceXUSDT) / 10 ** 6;
+				balance.oilmint = Number(balanceOILMINT) / 10 ** 6;
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	$: balanceOf(connectedAccount);
+
+	onMount(() => {
+		let mintingElement = document.getElementById('minting');
+		let minting = mintingElement?.getBoundingClientRect().right;
+
+		let root = document.documentElement;
+		root.style.setProperty(
+			'--account-center-position-right',
+			window.screen.width - (minting ?? 0) - 16 + 'px'
+		);
+	});
 </script>
 
 <div
@@ -241,6 +243,7 @@
 			{mintingResultOptions}
 			{selectedBaseMint}
 			{selectedResultMint}
+			{balance}
 		/>
 		<Redeem
 			{firstMenu}
@@ -253,6 +256,7 @@
 			{mintingResultOptions}
 			{selectedBaseMint}
 			{selectedResultMint}
+			{balance}
 		/>
 
 		{#if calculated}
