@@ -13,12 +13,13 @@
 			class="flex justify-center items-center lg:justify-between lg:items-start flex-col lg:flex-row gap-20 md:gap-8 pt-0 lg:pt-24 w-full"
 		>
 			<div class="flex flex-col gap-6 max-w-[529px] w-full pt-28">
-				<h1 class="text-7xl leading-[normal] text-center lg:text-left">
-					Lorem Ipsum is simply dummy
+				<h1 class="text-6xl leading-[normal] text-center lg:text-left">
+					Decentralized Synthetic Assets
 				</h1>
 				<p class="text-center lg:text-left">
-					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-					been the industry's standard dummy text ever since the 1500s.
+					Trade stocks, commodities, etfs on the XinFin, this track the price of real world assets.
+					Synthetic xMint are intended to be used as key building blocks in smart contracts. First
+					step towards building a real DEX, hedging in the real world.
 				</p>
 			</div>
 			<Minting />

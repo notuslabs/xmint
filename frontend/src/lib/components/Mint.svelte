@@ -6,6 +6,13 @@
 	import type { SvelteComponent } from 'svelte';
 	import { result } from '$lib/stores/resultStore';
 
+	import { BrowserProvider, JsonRpcProvider, Contract, ZeroAddress } from 'ethers';
+	import onboard from '$lib/web3-onboard';
+
+	import XusdtABI from '$lib/XUSDT.json';
+
+	import { XUSDTContract, rpcURL } from '$lib/constants';
+
 	export let mintingBaseOptions: {
 		label: string;
 		icon: typeof SvelteComponent;
@@ -55,6 +62,7 @@
 			mintedValue = 0;
 			return;
 		}
+
 		mintedValue = (amount * 0.0125) / 2;
 	}
 
@@ -71,6 +79,27 @@
 	}
 
 	$: $result.mint = collateralValue === 0 ? null : mintedValue;
+
+	const wallets$ = onboard.state.select('wallets');
+	$: connectedAccount = $wallets$?.[0]?.accounts?.[0];
+
+	let balance = 0;
+
+	const balanceOf = async (connectedAccount: any) => {
+		const readProvider = new JsonRpcProvider(rpcURL);
+		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
+
+		try {
+			if (connectedAccount.address) {
+				const tx = await contractRead.balanceOf(connectedAccount.address);
+				balance = Number(tx) / 10 ** 6;
+			}
+			return 0;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	$: balanceOf(connectedAccount);
 </script>
 
 <div use:melt={$tabContent('mint')} class="flex flex-col gap-8 relative">
@@ -112,7 +141,9 @@
 						{/each}
 					</div>
 					<!-- Dropdown Component -->
-					<span class="text-sm text-dark-gray-500 font-bold leading-[normal]">Balance:</span>
+					<span class="text-sm text-dark-gray-500 font-bold leading-[normal]"
+						>Balance: {balance}</span
+					>
 				</div>
 				<div class="flex justify-end items-center h-[79.5px]">
 					<input
