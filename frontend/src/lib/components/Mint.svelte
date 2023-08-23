@@ -73,6 +73,11 @@
 		collateralValue = Number((amount / 0.0125 / 2).toPrecision(21));
 	}
 
+	function addMax() {
+		collateralValue = balance.xusdt;
+		onCollateralValueChange(collateralValue);
+	}
+
 	$: $result.mint = collateralValue === 0 ? null : mintedValue;
 	$: $currentTab;
 </script>
@@ -120,7 +125,11 @@
 						>Balance: {balance.xusdt}</span
 					>
 				</div>
-				<div class="flex justify-end items-center h-[79.5px]">
+				<div class="flex flex-col justify-start items-end h-[79.5px]">
+					<button
+						class={'px-2 text-sm rounded-lg border border-mint bg-mint-transparent top-0 transition ease-in-out-quart duration-300'}
+						on:click={addMax}>MAX</button
+					>
 					<input
 						type="number"
 						name="collateral"

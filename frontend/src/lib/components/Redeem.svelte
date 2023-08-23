@@ -72,6 +72,11 @@
 		collateralValue = Number(((amount / 0.0125) * 2).toPrecision(21));
 	}
 
+	function addMax() {
+		mintedValue = balance.oilmint;
+		onMintedValueChange(mintedValue);
+	}
+
 	$: $result.redeem = mintedValue === 0 ? null : collateralValue;
 	$: $currentTab;
 </script>
@@ -119,7 +124,11 @@
 						>Balance: {balance.oilmint}</span
 					>
 				</div>
-				<div class="flex justify-end items-center h-[79.5px]">
+				<div class="flex flex-col justify-start items-end h-[79.5px]">
+					<button
+						class={'px-2 text-sm rounded-lg border border-mint bg-mint-transparent top-0 transition ease-in-out-quart duration-300'}
+						on:click={addMax}>MAX</button
+					>
 					<input
 						type="number"
 						name="minted"
