@@ -5,14 +5,15 @@ xMint is a dapp where you can trade stocks, commodities and ETFs on the XinFin n
 ![xmint-1](https://github.com/notuslabs/xmint/assets/35041924/df3f365e-2be4-4c7a-b294-cfe9e3a74f89)
 ***xMint Homepage***
 
+
 > Trade stocks, commodities, etfs on the XinFin, this track the price of real world assets......
 
 ### Run
- - Clone o repositório https://github.com/notuslabs/xmint
- - Entre no diretório do projeto cd xmint/frontend
- - Execute o comando npm install
- - Execute o comando npm run dev
- - Abra seu navegador em http://localhost:5173 para visualizá-lo.
+ - Clone the repository https://github.com/notuslabs/xmint
+ - Enter the project directory cd xmint/frontend
+ - Run npm install command- Run npm run dev command
+ - Open your browser at http://localhost:5173 to view it.
+
 
 ### Requirements
  - Node.js
