@@ -73,6 +73,11 @@
 	}
 
 	function addMax() {
+		if (mintedValue === balance.oilmint) {
+			mintedValue = null;
+			onMintedValueChange(mintedValue);
+			return;
+		}
 		mintedValue = balance.oilmint;
 		onMintedValueChange(mintedValue);
 	}

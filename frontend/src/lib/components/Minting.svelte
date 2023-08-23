@@ -115,7 +115,7 @@
 
 		try {
 			const tx = await contractRead.allowance(connectedAccount.address, OilMintContract);
-			isApproved = Number(tx) / 10 ** 6 > ((amount || 0) / 0.0125) * 2;
+			isApproved = Number(tx) / 10 ** 6 >= ((amount || 0) / 0.0125) * 2;
 		} catch (error) {
 			console.log(error);
 		}
@@ -225,32 +225,36 @@
 		</button>
 	</div>
 	<div class={cn('flex flex-col gap-8', calculated && 'gap-6')}>
-		<Mint
-			{firstMenu}
-			{firstMenuItem}
-			{firstMenuTrigger}
-			{secondMenu}
-			{secondMenuItem}
-			{secondMenuTrigger}
-			{mintingBaseOptions}
-			{mintingResultOptions}
-			{selectedBaseMint}
-			{selectedResultMint}
-			{balance}
-		/>
-		<Redeem
-			{firstMenu}
-			{firstMenuItem}
-			{firstMenuTrigger}
-			{secondMenu}
-			{secondMenuItem}
-			{secondMenuTrigger}
-			{mintingBaseOptions}
-			{mintingResultOptions}
-			{selectedBaseMint}
-			{selectedResultMint}
-			{balance}
-		/>
+		{#key $currentTab}
+			<Mint
+				{firstMenu}
+				{firstMenuItem}
+				{firstMenuTrigger}
+				{secondMenu}
+				{secondMenuItem}
+				{secondMenuTrigger}
+				{mintingBaseOptions}
+				{mintingResultOptions}
+				{selectedBaseMint}
+				{selectedResultMint}
+				{balance}
+			/>
+		{/key}
+		{#key $currentTab}
+			<Redeem
+				{firstMenu}
+				{firstMenuItem}
+				{firstMenuTrigger}
+				{secondMenu}
+				{secondMenuItem}
+				{secondMenuTrigger}
+				{mintingBaseOptions}
+				{mintingResultOptions}
+				{selectedBaseMint}
+				{selectedResultMint}
+				{balance}
+			/>
+		{/key}
 
 		{#if calculated}
 			<p

@@ -74,12 +74,16 @@
 	}
 
 	function addMax() {
+		if (collateralValue === balance.xusdt) {
+			collateralValue = null;
+			onCollateralValueChange(collateralValue);
+			return;
+		}
 		collateralValue = balance.xusdt;
 		onCollateralValueChange(collateralValue);
 	}
 
 	$: $result.mint = collateralValue === 0 ? null : mintedValue;
-	$: $currentTab;
 </script>
 
 <div use:melt={$tabContent('mint')} class="flex flex-col gap-8 relative">
