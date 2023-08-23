@@ -27,7 +27,12 @@ xMint is a DApp that allows you to trade stocks, commodities, and ETFs on the Xi
 - melt-ui;
 - web3-onboard.js;
 - ethers.js
+- Solidity
+- Hardhat
 
+### Smart Contracts
+
+![Mainnet Contract](https://xdc.blocksscan.io/address/xdc0875275210fbae70d453abecaaf6a95d8f2146b3#readContract)
 
 ## 📜 License
 
