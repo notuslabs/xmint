@@ -16,13 +16,9 @@
 	import { result } from '$lib/stores/resultStore';
 	import { slide } from 'svelte/transition';
 
-	import { ethers, Contract } from 'ethers';
 	import onboard from '$lib/web3-onboard';
 
-	import OilMintABI from '$lib/OilMint.json';
-	import XusdtABI from '$lib/XUSDT.json';
-
-	import { OilMintContract, XUSDTContract, rpcURL } from '$lib/constants';
+	import { approve, allowance, deposit, withdraw, balanceOf } from '$lib/mint';
 
 	initTabsStore({
 		defaultValue: 'mint'
@@ -88,96 +84,25 @@
 
 	const wallets$ = onboard.state.select('wallets');
 	$: connectedAccount = $wallets$?.[0]?.accounts?.[0];
+	$: provider = $wallets$?.[0]?.provider;
 
 	const connect = async () => {
 		await onboard.connectWallet();
 	};
 
-	const approve = async () => {
-		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
-		const signer = await sendProvider.getSigner();
-		try {
-			const contractSend = new Contract(XUSDTContract, XusdtABI, signer);
-
-			const tx = await contractSend.approve(OilMintContract, ethers.constants.MaxUint256);
-			alert('Approved');
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	let isApproved: boolean;
-
-	const allowance = async (connectedAccount: any, amount: any) => {
-		const readProvider = new ethers.providers.JsonRpcProvider(rpcURL);
-
-		const contractRead = new Contract(XUSDTContract, XusdtABI, readProvider);
-
-		try {
-			const tx = await contractRead.allowance(connectedAccount.address, OilMintContract);
-			isApproved = Number(tx) / 10 ** 6 >= ((amount || 0) / 0.0125) * 2;
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	$: allowance(connectedAccount, $result.mint);
-
-	const deposit = async () => {
-		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
-
-		const signer = sendProvider.getSigner();
-
-		try {
-			const contractSend = new Contract(OilMintContract, OilMintABI, signer);
-			const tx = await contractSend.deposit((($result.mint || 0) / 0.0125) * 2 * 10 ** 6);
-
-			return tx;
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const withdraw = async () => {
-		const sendProvider = new ethers.providers.Web3Provider($wallets$?.[0]?.provider);
-
-		const signer = sendProvider.getSigner();
-
-		try {
-			const contractSend = new Contract(OilMintContract, OilMintABI, signer);
-			const tx = await contractSend.withdraw(((($result.redeem || 0) * 0.0125) / 2) * 10 ** 6);
-
-			return tx;
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	let isApproved: boolean | undefined;
+	$: {
+		allowance(connectedAccount, $result.mint || 0).then((res) => (isApproved = res));
+	}
 
 	let balance = {
 		xusdt: 0,
 		oilmint: 0
 	};
 
-	const balanceOf = async (connectedAccount: any) => {
-		const readProvider = new ethers.providers.JsonRpcProvider(rpcURL);
-
-		const xUSDT = new Contract(XUSDTContract, XusdtABI, readProvider);
-		const xOil = new Contract(OilMintContract, OilMintABI, readProvider);
-
-		try {
-			if (connectedAccount.address) {
-				const balanceXUSDT = await xUSDT.balanceOf(connectedAccount.address);
-				const balanceOILMINT = await xOil.balanceOf(connectedAccount.address);
-
-				balance.xusdt = Number(balanceXUSDT) / 10 ** 6;
-				balance.oilmint = Number(balanceOILMINT) / 10 ** 6;
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	$: balanceOf(connectedAccount);
+	$: {
+		balanceOf(connectedAccount).then((res) => (balance = res));
+	}
 
 	onMount(() => {
 		let mintingElement = document.getElementById('minting');
@@ -294,14 +219,25 @@
 				{#if isApproved}
 					<button
 						class="font-bold bg-mint rounded-lg px-2.5 py-[11.5px] h-10 flex justify-center items-center hover:bg-mint-dark transition-colors active:bg-mint-darker"
-						on:click={deposit}
+						on:click={() => deposit(provider, $result.mint || 0)}
 					>
 						Mint
 					</button>
 				{:else}
 					<button
 						class="font-bold bg-mint rounded-lg px-2.5 py-[11.5px] h-10 flex justify-center items-center hover:bg-mint-dark transition-colors active:bg-mint-darker"
-						on:click={approve}
+						on:click={() =>
+							approve(provider, {
+								message: {
+									success: 'Success',
+									pending: 'Pending',
+									error: 'Error'
+								},
+								callbacks: {
+									onSuccess: () => console.log('Success'),
+									onFail: () => console.log('Error')
+								}
+							})}
 					>
 						Approve
 					</button>
@@ -309,7 +245,7 @@
 			{:else}
 				<button
 					class="font-bold bg-mint rounded-lg px-2.5 py-[11.5px] h-10 flex justify-center items-center hover:bg-mint-dark transition-colors active:bg-mint-darker"
-					on:click={withdraw}
+					on:click={() => withdraw(provider, $result.redeem || 0)}
 				>
 					Redeem
 				</button>

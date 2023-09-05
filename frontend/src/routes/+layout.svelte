@@ -6,6 +6,7 @@
 	import { fade } from 'svelte/transition';
 	import ComingSoonLink from '$lib/components/ComingSoonLink.svelte';
 	import ConnectWallet from '$lib/components/ConnectWallet.svelte';
+	import Toaster from '$lib/components/Toaster.svelte';
 
 	const {
 		elements: { trigger, content, arrow },
@@ -23,6 +24,8 @@
 		return route === $page.url.pathname;
 	}
 </script>
+
+<Toaster />
 
 <nav class="gap-2 container mx-auto flex justify-between items-center h-navbar mt-8 px-6">
 	<a href="/">
@@ -45,4 +48,5 @@
 		<ConnectWallet />
 	</div>
 </nav>
+
 <slot />
