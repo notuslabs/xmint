@@ -41,6 +41,7 @@
 		"tailwindcss-easing": "^0.2.1",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
+		"typescript-svelte-plugin": "^0.3.31",
 		"vite": "^4.4.2",
 		"vitest": "^0.32.2"
 	},
